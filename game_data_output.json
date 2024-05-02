@@ -1,1 +1,242 @@
-{}
+{
+    "1988050": {
+        "1988050": {
+            "success": true,
+            "data": {
+                "type": "game",
+                "name": "CAVE VR",
+                "steam_appid": 1988050,
+                "required_age": 0,
+                "is_free": false,
+                "detailed_description": "<strong>*Only supports Oculus but not other machines, sorry for any inconvenience caused</strong><br><br><strong><h2 class=\"bb_tag\">Game Story Outline :</h2></strong><br>The player plays an explorer who is accidentally trapped in an ancient mysterious cave. There are messages of ancient residents left in the cave, leading the explorer to operate the ruins in the cave. The clues along the way seem to imply a long story.<br><br>Is the end of the ruins the exit of the cave, or the bottomless darkness?<br><strong><h2 class=\"bb_tag\">What kind of game is this ?</h2></strong><br>CAVE  It is a puzzle-solving 3DVR game.<br>Players will play the role of explorers to explore the ruins in the cave, and try to escape from the cave by interacting with the scene organs to solve puzzles.<br><strong><h2 class=\"bb_tag\">Gameplay :</h2></strong><br><br>Interact with the ruins in the ruins to unlock the seal of the ruins<br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988050/extras/\u64cd\u4f5c\u7403\u7403_2.gif?t=1654605076\" /><br><br>There are various puzzles waiting for players to solve<br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988050/extras/\u5404\u7a2e\u6a5f\u95dc_2.gif?t=1654605076\" /><br><br><strong><h2 class=\"bb_tag\">Game Features\uff1a</h2></strong><br><ul class=\"bb_ul\"><li>Immersive virtual ancient ruins, unique immersive art scenes.<br></li><li>Solve puzzles using interaction mechanisms corresponding to scene objects.<br></li><li>Objects and environmental changes in the ruins will suggest the direction of the plot.</li></ul>",
+                "about_the_game": "<strong>*Only supports Oculus but not other machines, sorry for any inconvenience caused</strong><br><br><strong><h2 class=\"bb_tag\">Game Story Outline :</h2></strong><br>The player plays an explorer who is accidentally trapped in an ancient mysterious cave. There are messages of ancient residents left in the cave, leading the explorer to operate the ruins in the cave. The clues along the way seem to imply a long story.<br><br>Is the end of the ruins the exit of the cave, or the bottomless darkness?<br><strong><h2 class=\"bb_tag\">What kind of game is this ?</h2></strong><br>CAVE  It is a puzzle-solving 3DVR game.<br>Players will play the role of explorers to explore the ruins in the cave, and try to escape from the cave by interacting with the scene organs to solve puzzles.<br><strong><h2 class=\"bb_tag\">Gameplay :</h2></strong><br><br>Interact with the ruins in the ruins to unlock the seal of the ruins<br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988050/extras/\u64cd\u4f5c\u7403\u7403_2.gif?t=1654605076\" /><br><br>There are various puzzles waiting for players to solve<br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988050/extras/\u5404\u7a2e\u6a5f\u95dc_2.gif?t=1654605076\" /><br><br><strong><h2 class=\"bb_tag\">Game Features\uff1a</h2></strong><br><ul class=\"bb_ul\"><li>Immersive virtual ancient ruins, unique immersive art scenes.<br></li><li>Solve puzzles using interaction mechanisms corresponding to scene objects.<br></li><li>Objects and environmental changes in the ruins will suggest the direction of the plot.</li></ul>",
+                "short_description": "CAVE is the original VR puzzle game, looking for a journey of exploration in the ancient mysterious cave ruins, the ruins of the ancient inhabitants are from the exit ruins in layers, and the horse-hunting treasure hunt on the road seems to imply on.",
+                "supported_languages": "English, Traditional Chinese",
+                "header_image": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/header.jpg?t=1654605076",
+                "capsule_image": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/capsule_231x87.jpg?t=1654605076",
+                "capsule_imagev5": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/capsule_184x69.jpg?t=1654605076",
+                "website": "https://jenny60719.wixsite.com/portfolio/cave",
+                "pc_requirements": {
+                    "minimum": "<strong>Minimum:</strong><br><ul class=\"bb_ul\"><li>Requires a 64-bit processor and operating system<br></li><li><strong>OS:</strong> Windows 10<br></li><li><strong>Processor:</strong> Intel i7-10700<br></li><li><strong>Memory:</strong> 8 GB RAM<br></li><li><strong>Graphics:</strong> NVIDIA GTX 3070<br></li><li><strong>DirectX:</strong> Version 10<br></li><li><strong>Storage:</strong> 1 GB available space<br></li><li><strong>VR Support:</strong> SteamVR or OpenXR. Standing Only</li></ul>",
+                    "recommended": "<strong>Recommended:</strong><br><ul class=\"bb_ul\"><li>Requires a 64-bit processor and operating system<br></li><li><strong>OS:</strong> Windows 10<br></li><li><strong>Processor:</strong> Intel i9-10900K<br></li><li><strong>Memory:</strong> 8 GB RAM<br></li><li><strong>Graphics:</strong> NVIDIA GeForce\u2122 GTX 3090<br></li><li><strong>DirectX:</strong> Version 10<br></li><li><strong>Storage:</strong> 1 GB available space</li></ul>"
+                },
+                "mac_requirements": {
+                    "minimum": "<strong>Minimum:</strong><br><ul class=\"bb_ul\"></ul>",
+                    "recommended": "<strong>Recommended:</strong><br><ul class=\"bb_ul\"></ul>"
+                },
+                "linux_requirements": {
+                    "minimum": "<strong>Minimum:</strong><br><ul class=\"bb_ul\"></ul>",
+                    "recommended": "<strong>Recommended:</strong><br><ul class=\"bb_ul\"></ul>"
+                },
+                "developers": [
+                    "XJennyo",
+                    "Tooth Lee",
+                    "Yue",
+                    "Nari"
+                ],
+                "publishers": [
+                    "Sable Studio"
+                ],
+                "price_overview": {
+                    "currency": "CAD",
+                    "initial": 799,
+                    "final": 799,
+                    "discount_percent": 0,
+                    "initial_formatted": "",
+                    "final_formatted": "CDN$ 7.99"
+                },
+                "packages": [
+                    717785
+                ],
+                "package_groups": [
+                    {
+                        "name": "default",
+                        "title": "Buy CAVE VR",
+                        "description": "",
+                        "selection_text": "Select a purchase option",
+                        "save_text": "",
+                        "display_type": 0,
+                        "is_recurring_subscription": "false",
+                        "subs": [
+                            {
+                                "packageid": 717785,
+                                "percent_savings_text": " ",
+                                "percent_savings": 0,
+                                "option_text": "CAVE VR - CDN$ 7.99",
+                                "option_description": "",
+                                "can_get_free_license": "0",
+                                "is_free_license": false,
+                                "price_in_cents_with_discount": 799
+                            }
+                        ]
+                    }
+                ],
+                "platforms": {
+                    "windows": true,
+                    "mac": false,
+                    "linux": false
+                },
+                "categories": [
+                    {
+                        "id": 2,
+                        "description": "Single-player"
+                    },
+                    {
+                        "id": 52,
+                        "description": "Tracked Controller Support"
+                    },
+                    {
+                        "id": 54,
+                        "description": "VR Only"
+                    },
+                    {
+                        "id": 62,
+                        "description": "Family Sharing"
+                    }
+                ],
+                "genres": [
+                    {
+                        "id": "4",
+                        "description": "Casual"
+                    },
+                    {
+                        "id": "23",
+                        "description": "Indie"
+                    }
+                ],
+                "screenshots": [
+                    {
+                        "id": 0,
+                        "path_thumbnail": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_e73dd3d3e647bcc9967ca4558b727753ff090b96.600x338.jpg?t=1654605076",
+                        "path_full": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_e73dd3d3e647bcc9967ca4558b727753ff090b96.1920x1080.jpg?t=1654605076"
+                    },
+                    {
+                        "id": 1,
+                        "path_thumbnail": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_999d6a107503567a1273ed6f767138bc0df0126b.600x338.jpg?t=1654605076",
+                        "path_full": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_999d6a107503567a1273ed6f767138bc0df0126b.1920x1080.jpg?t=1654605076"
+                    },
+                    {
+                        "id": 2,
+                        "path_thumbnail": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_950173e52d15ed4a0b077b3a2849bc093fcf9a31.600x338.jpg?t=1654605076",
+                        "path_full": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_950173e52d15ed4a0b077b3a2849bc093fcf9a31.1920x1080.jpg?t=1654605076"
+                    },
+                    {
+                        "id": 3,
+                        "path_thumbnail": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_f7286794a2d191b093eb2f5e372f15d57c980d2e.600x338.jpg?t=1654605076",
+                        "path_full": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_f7286794a2d191b093eb2f5e372f15d57c980d2e.1920x1080.jpg?t=1654605076"
+                    },
+                    {
+                        "id": 4,
+                        "path_thumbnail": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_2c5608146f74f93569cebe7f250ed05a69accbd7.600x338.jpg?t=1654605076",
+                        "path_full": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/ss_2c5608146f74f93569cebe7f250ed05a69accbd7.1920x1080.jpg?t=1654605076"
+                    }
+                ],
+                "movies": [
+                    {
+                        "id": 256886649,
+                        "name": "CAVE VIDEO",
+                        "thumbnail": "https://cdn.akamai.steamstatic.com/steam/apps/256886649/movie.293x165.jpg?t=1654270449",
+                        "webm": {
+                            "480": "http://cdn.akamai.steamstatic.com/steam/apps/256886649/movie480_vp9.webm?t=1654270449",
+                            "max": "http://cdn.akamai.steamstatic.com/steam/apps/256886649/movie_max_vp9.webm?t=1654270449"
+                        },
+                        "mp4": {
+                            "480": "http://cdn.akamai.steamstatic.com/steam/apps/256886649/movie480.mp4?t=1654270449",
+                            "max": "http://cdn.akamai.steamstatic.com/steam/apps/256886649/movie_max.mp4?t=1654270449"
+                        },
+                        "highlight": true
+                    }
+                ],
+                "release_date": {
+                    "coming_soon": false,
+                    "date": "3 Jun, 2022"
+                },
+                "support_info": {
+                    "url": "https://jenny60719.wixsite.com/portfolio/cave",
+                    "email": "cave20220112@gmail.com"
+                },
+                "background": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/page_bg_generated_v6b.jpg?t=1654605076",
+                "background_raw": "https://cdn.akamai.steamstatic.com/steam/apps/1988050/page.bg.jpg?t=1654605076",
+                "content_descriptors": {
+                    "ids": [],
+                    "notes": null
+                },
+                "ratings": {
+                    "dejus": {
+                        "rating": "l"
+                    }
+                }
+            }
+        }
+    },
+    "1988220": {
+        "1988220": {
+            "success": true,
+            "data": {
+                "type": "demo",
+                "name": "Just Upstream Demo",
+                "steam_appid": 1988220,
+                "required_age": 0,
+                "is_free": true,
+                "detailed_description": "<strong>Note: This is the demo for Just Upstream, and only contains the first chapter of the full game.</strong><br><br>You are a Frog named Paul who has just released a novel into the world, though not to the reception you'd have hoped. With critics calling it 'unimaginative', Paul feels over-encumbered by the weight of failure. After using the proceeds from his novel to move into the scenic country, Paul begins to struggle with keeping his spirits up, and self-reflects on his life choices. What comes next? Should He even write again?<br><br>Dealing with themes of braving the unknown, finding ones' self, and dealing with Isolation, play as Paul The Frog as he adventures through the lush forests and mountains surrounding his new home. Build meaningful relationships with your neighbors, and re-connect with old friends. Will you find the magic answer to all your problems?<h2 class=\"bb_tag\">Includes</h2><br><ul class=\"bb_ul\"><li> Physics-Based player presence allows you to walk, jump, and climb in a way that makes you feel like a part of the world. Jump higher and higher the more crickets you eat! \ud83e\udd97<br><br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988220/extras/Climbing.gif?t=1655103728\" /><br><br><br></li><li> Solve platforming puzzles and swing across moving obstacles with your frog tongue! Eating pesky flies allow you to chain your swings for even more air time! \ud83e\udd9f<br><br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988220/extras/Swinging.gif?t=1655103728\" /><br><br><br></li><li> Talk to your new neighbors! Form relationships, listen to their stories, and open up with your own struggles. The path to healing shouldn't be walked alone. <br><br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988220/extras/Bugs.gif?t=1655103728\" /><br><br><br></li><li> Enjoy a Custom Chill-hop Lofi Soundtrack by Nogymx! You may even be able to relax or study to it.<br><br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988220/extras/Realxing.gif?t=1655103728\" /></li></ul>",
+                "about_the_game": "<strong>Note: This is the demo for Just Upstream, and only contains the first chapter of the full game.</strong><br><br>You are a Frog named Paul who has just released a novel into the world, though not to the reception you'd have hoped. With critics calling it 'unimaginative', Paul feels over-encumbered by the weight of failure. After using the proceeds from his novel to move into the scenic country, Paul begins to struggle with keeping his spirits up, and self-reflects on his life choices. What comes next? Should He even write again?<br><br>Dealing with themes of braving the unknown, finding ones' self, and dealing with Isolation, play as Paul The Frog as he adventures through the lush forests and mountains surrounding his new home. Build meaningful relationships with your neighbors, and re-connect with old friends. Will you find the magic answer to all your problems?<h2 class=\"bb_tag\">Includes</h2><br><ul class=\"bb_ul\"><li> Physics-Based player presence allows you to walk, jump, and climb in a way that makes you feel like a part of the world. Jump higher and higher the more crickets you eat! \ud83e\udd97<br><br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988220/extras/Climbing.gif?t=1655103728\" /><br><br><br></li><li> Solve platforming puzzles and swing across moving obstacles with your frog tongue! Eating pesky flies allow you to chain your swings for even more air time! \ud83e\udd9f<br><br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988220/extras/Swinging.gif?t=1655103728\" /><br><br><br></li><li> Talk to your new neighbors! Form relationships, listen to their stories, and open up with your own struggles. The path to healing shouldn't be walked alone. <br><br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988220/extras/Bugs.gif?t=1655103728\" /><br><br><br></li><li> Enjoy a Custom Chill-hop Lofi Soundtrack by Nogymx! You may even be able to relax or study to it.<br><br><img src=\"https://cdn.akamai.steamstatic.com/steam/apps/1988220/extras/Realxing.gif?t=1655103728\" /></li></ul>",
+                "short_description": "In this Physics-based VR Adventure, Jump, climb, and swing through mystic nature as Paul, A Frog. On a journey to find self worth, meet new friends, find hidden secrets, and get to the root of your fears.",
+                "fullgame": {
+                    "appid": "1925850",
+                    "name": "Just Upstream"
+                },
+                "supported_languages": "English<strong>*</strong><br><strong>*</strong>languages with full audio support",
+                "header_image": "https://cdn.akamai.steamstatic.com/steam/apps/1988220/header.jpg?t=1655103728",
+                "capsule_image": "https://cdn.akamai.steamstatic.com/steam/apps/1988220/capsule_231x87.jpg?t=1655103728",
+                "capsule_imagev5": "https://cdn.akamai.steamstatic.com/steam/apps/1988220/capsule_184x69.jpg?t=1655103728",
+                "website": null,
+                "pc_requirements": {
+                    "minimum": "<strong>Minimum:</strong><br><ul class=\"bb_ul\"><li><strong>OS:</strong> Windows 10<br></li><li><strong>Processor:</strong> quad-core 3.0ghz minimum<br></li><li><strong>Memory:</strong> 12 GB RAM<br></li><li><strong>Graphics:</strong> GTX 1070 or equivalent<br></li><li><strong>Storage:</strong> 10 GB available space<br></li><li><strong>Additional Notes:</strong> CPU performance required for Physics of player avatar + light environment physics.</li></ul>"
+                },
+                "mac_requirements": [],
+                "linux_requirements": [],
+                "developers": [
+                    "Sean Carrick"
+                ],
+                "publishers": [
+                    "Sean Carrick"
+                ],
+                "package_groups": [],
+                "platforms": {
+                    "windows": true,
+                    "mac": false,
+                    "linux": false
+                },
+                "categories": [
+                    {
+                        "id": 2,
+                        "description": "Single-player"
+                    },
+                    {
+                        "id": 10,
+                        "description": "Game demo"
+                    },
+                    {
+                        "id": 54,
+                        "description": "VR Only"
+                    }
+                ],
+                "release_date": {
+                    "coming_soon": false,
+                    "date": "12 Jun, 2022"
+                },
+                "support_info": {
+                    "url": "https://twitter.com/True_Beef",
+                    "email": "guntreellc@gmail.com"
+                },
+                "background": "",
+                "background_raw": "",
+                "content_descriptors": {
+                    "ids": [],
+                    "notes": null
+                },
+                "ratings": null
+            }
+        }
+    }
+}
