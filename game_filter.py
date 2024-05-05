@@ -9,6 +9,7 @@ import re
 from steam_store_poller import poll_steam
 from ai_description_tool import summarize_text_with_openai 
 from games_list_comparer import comparer
+from picture_downloader import pic_downloader
 
    # Load environment variables
 load_dotenv()
@@ -139,14 +140,20 @@ with open('new_games.json') as json_file:
             exclude_tags = ['Hentai', 'Mature', 'Sexual Content', 'Nudity', 'NSFW', 'Milf', 'sexy', 'Sexy', 'milf', 'sex', 'porn', 'Porn', 'sex', 'Sex', 'sexual', 'Sexual', 'bukkake']  # Define your exclude tags here.
 
            # Retrieve detailed_description or about_the_game
-            bad_description = game_details.get('detailed_description') or game_details.get('about_the_game')
+            try:
+                if game_details is not None:
+                    bad_description = game_details.get('detailed_description') or game_details.get('about_the_game')
+                else:
+                    bad_description = 'this is ok'
+                    print(f'{game_name} has no game details')
+            except Exception as e:
+                print(f'There was an error: {str(e)}')
 
             # Split words if description is not None
             if bad_description is not None:
                 words = bad_description.split()
             else:
-                words = []  # Use an empty list as words if there's no description
-           
+                words = []
 
             if game_details is not None and game_details.get('type') == 'game':
                 vr_tag_present = any([category.get('description', '') == "VR Only" or category.get('description', '') == "VR Supported" and category.get('description', '') not in exclude_tags 
@@ -162,37 +169,39 @@ with open('new_games.json') as json_file:
                     game_details['url'] = url  # Storing the URL in the game details
 
                     all_games_data[appid] = game_data
-                
+
+                    pic_downloader(game_name, game_details['screenshots'])
+
                     strip_keys(all_games_data[appid], keys_to_strip)
                
                     # print(f"VR tag found for game {game_name} with appid {appid}")
                     print(f"game #{counter}:{game_name} is vr")
                 
  
-                if 'description' in game_details:
+                if game_details is not None and 'description' in game_details:
                     description = game_details['description']
                     try:
                         summarized_description = summarize_text_with_openai(description)
+                
                     except Exception as e:
                         print(f"Error during description summarization: {e}")
                         summarized_description = None
+
+                    with open('game_data_output.json', 'r') as f:
+                        existing_data = json.load(f)
+                        existing_data.update(all_games_data)
                 
-                with open('game_data_output.json', 'r') as f:
-                    existing_data = json.load(f)
-                    existing_data.update(all_games_data)
-                with open('game_data_output.json', 'w') as f:
-                    json.dump(existing_data, f, indent=4)
-                all_games_data = {} 
-          
-            else:
-                #print(f"game#{counter+1}:{game_name} is not vr")
-                pass
+                    with open('game_data_output.json', 'w') as f:
+                        json.dump(existing_data, f, indent=4)
+                        all_games_data = {}
+                else: 
+                    print(f'game#{counter+1}:{game_name} is not a vr')
                         
         else:
             print(f"Request failed for appid:{appid}")
             print(response.status_code)
-
-        time.sleep(1.5)
+    
+        
         # Check if the game has a 'VR' tag in categories or genres
         
         # Load new games
@@ -216,12 +225,13 @@ with open('new_games.json') as json_file:
         # Write the updated new games back to new_games.json
         with open('new_games.json', 'w') as f:
             json.dump(new_games, f)
-
+        
+    
+        
         counter += 1
 
-
     # Dictionary with column:value pairs
-    data = {
+data = {
         "title": "Sample VR Title",
         "slug": "sample-vr-title",
         "description": "A detailed description of Sample VR Title goes here.",
@@ -235,18 +245,18 @@ with open('new_games.json') as json_file:
         "steam_id": ""
     }
 
+
     # Dynamically building the SQL statement
-    columns = ', '.join(data.keys())
-    placeholders = ', '.join(['%s'] * len(data))
-    sql = f"INSERT INTO vr_titles ({columns}) VALUES ({placeholders})"
+columns = ', '.join(data.keys())
+placeholders = ', '.join(['%s'] * len(data))
+sql = f"INSERT INTO vr_titles ({columns}) VALUES ({placeholders})"
     
     # Executing the SQL command
-    mysql_query.execute(sql, list(data.values()))
+mysql_query.execute(sql, list(data.values()))
     
     # Committing the changes to the database
-    mysql_client.commit()
+mysql_client.commit()
     
-    print("Data inserted successfully")
-
+print("Data inserted successfully")
 
 
