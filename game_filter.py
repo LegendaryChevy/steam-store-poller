@@ -10,7 +10,7 @@ from steam_store_poller import poll_steam
 from ai_description_tool import summarize_text_with_openai 
 from games_list_comparer import comparer
 from picture_downloader import pic_downloader
-
+import pprint
    # Load environment variables
 load_dotenv()
 
@@ -145,7 +145,7 @@ with open('new_games.json') as json_file:
                     bad_description = game_details.get('detailed_description') or game_details.get('about_the_game')
                 else:
                     bad_description = 'this is ok'
-                    print(f'{game_name} has no game details')
+                    #print(f'{game_name} has no game details')
             except Exception as e:
                 print(f'There was an error: {str(e)}')
 
@@ -171,18 +171,20 @@ with open('new_games.json') as json_file:
                     all_games_data[appid] = game_data
 
                     pic_downloader(game_name, game_details['screenshots'])
-
                     strip_keys(all_games_data[appid], keys_to_strip)
                
                     # print(f"VR tag found for game {game_name} with appid {appid}")
                     print(f"game #{counter}:{game_name} is vr")
                 
- 
-                if game_details is not None and 'description' in game_details:
-                    description = game_details['description']
+                
+
+                #pprint.pprint(game_details)
+                if game_details is not None and 'detailed_description' in game_details:
+                    #print('game detailed_description found')
+                    description = game_details['detailed_description']
                     try:
                         summarized_description = summarize_text_with_openai(description)
-                
+                        game_details['ai_description'] = summarized_description
                     except Exception as e:
                         print(f"Error during description summarization: {e}")
                         summarized_description = None
@@ -194,8 +196,8 @@ with open('new_games.json') as json_file:
                     with open('game_data_output.json', 'w') as f:
                         json.dump(existing_data, f, indent=4)
                         all_games_data = {}
-                else: 
-                    print(f'game#{counter+1}:{game_name} is not a vr')
+                #else: 
+                    #print(f'game#{counter+1}:{game_name} is not a vr')
                         
         else:
             print(f"Request failed for appid:{appid}")
