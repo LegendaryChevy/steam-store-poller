@@ -1,36 +1,19 @@
 import json
 import requests
-import time
 import os
-import mysql.connector
 from mysql.connector import connect, Error
 from dotenv import load_dotenv
-import re
 from steam_store_poller import poll_steam
 from ai_description_tool import summarize_text_with_openai 
 from games_list_comparer import comparer
 from picture_downloader import pic_downloader
 import pprint
+  
+  
    # Load environment variables
 load_dotenv()
 
-# Retrieve database credentials
-db_config = {
-    'user': os.getenv('MYSQL_USER'),
-    'password': os.getenv('MYSQL_PASSWORD'),
-    'host': os.getenv('MYSQL_HOST'),
-    'database': os.getenv('MYSQL_DB'),
-}
 
-try:
-    # Establishing the connection
-    mysql_client = connect(**db_config)
-    print('Successfully connected to the database.')
-
-    mysql_query = mysql_client.cursor()
-   
-except Error as err:
-    print(f"Error: {err}")
 
 
 def strip_keys(data, keys_to_strip):
@@ -231,34 +214,5 @@ with open('new_games.json') as json_file:
     
         
         counter += 1
-
-    # Dictionary with column:value pairs
-data = {
-        "title": "Sample VR Title",
-        "slug": "sample-vr-title",
-        "description": "A detailed description of Sample VR Title goes here.",
-        "short_description": "A short description of Sample VR Title.",
-        "primary_image": "/path/to/primary/image.jpg",
-        "age_rating": "E",
-        "min_players": 1,
-        "max_players": 4,
-        "store_url": "https://store.example.com/sample-vr-title",
-        "active": 1,
-        "steam_id": ""
-    }
-
-
-    # Dynamically building the SQL statement
-columns = ', '.join(data.keys())
-placeholders = ', '.join(['%s'] * len(data))
-sql = f"INSERT INTO vr_titles ({columns}) VALUES ({placeholders})"
-    
-    # Executing the SQL command
-mysql_query.execute(sql, list(data.values()))
-    
-    # Committing the changes to the database
-mysql_client.commit()
-    
-print("Data inserted successfully")
 
 
