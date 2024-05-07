@@ -1,8 +1,10 @@
 import os
 from dotenv import load_dotenv
 import mysql.connector
+from mysql.connector import connect, Error
 import json
-load_dotenv
+
+load_dotenv()
 
 
 
@@ -65,7 +67,11 @@ def multi_player():
         return "no"
 
    # Dictionary with column:value pairs
-data = {
+
+
+for game in games:
+    
+    data = {
         "title": game_data["name"],
         "slug": make_slug(game_data["name"]),
         "description": game_data["ai_description"],
@@ -76,20 +82,30 @@ data = {
         "multi_player": multi_player(),
         "store_url": game_data["url"],
         "active": 1,
-        "steam_id": game_data["steam_appid"]
+        "steam_appid": game_data["steam_appid"]
     }
 
 
-    # Dynamically building the SQL statement
-columns = ', '.join(data.keys())
-placeholders = ', '.join(['%s'] * len(data))
-sql = f"INSERT INTO vr_titles ({columns}) VALUES ({placeholders})"
-    
-    # Executing the SQL command
-mysql_query.execute(sql, list(data.values()))
-    
-    # Committing the changes to the database
-mysql_client.commit()
-    
-print("Data inserted successfully")
+    steam_appid = game_data["steam_appid"]
 
+        # SQL command to check if the steam_appid already exists in the database
+    sql_check = f"SELECT 1 FROM vr_titles WHERE steam_appid = %s"
+    mysql_query.execute(sql_check, (steam_appid,))
+
+# If the steam_appid does not exist in the database then insert the data
+    if not mysql_query.fetchone():
+            # Dynamically building the SQL statement
+        columns = ', '.join(data.keys())
+        placeholders = ', '.join(['%s'] * len(data))
+        sql = f"INSERT INTO vr_titles ({columns}) VALUES ({placeholders})"
+            
+            # Executing the SQL command
+        mysql_query.execute(sql, list(data.values()))
+            
+            # Committing the changes to the database
+        mysql_client.commit()
+            
+        print("Data inserted successfully")
+
+    else:
+        pass
