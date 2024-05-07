@@ -30,8 +30,11 @@ with open("game_data_output.json", "r") as f:
         game_data = game_info[app_id]["data"]
 
 
-
-  
+def make_slug(name):            
+    words = name.split(" ")
+    slug = "-".join(words)
+    return slug
+   
    # Dictionary with column:value pairs
 data = {
         "title": game_data["name"],
