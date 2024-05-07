@@ -34,15 +34,33 @@ def make_slug(name):
     words = name.split(" ")
     slug = "-".join(words)
     return slug
+
+
+def new_rating(input):
+    rating=""
+    if input == "l" or input == "AL":
+        rating = "E"
+
+    elif input in range(10, 13) or input == "A10" or input == "A12":
+        rating = "E10+"
+    
+    elif input in range(14, 17) or input == "A14" or input == "A16":
+        rating = "T"
+        
+    elif input == 18 or input == "A18":
+        rating = "M"
+    
+    return rating
+
    
    # Dictionary with column:value pairs
 data = {
         "title": game_data["name"],
-        "slug": "sample-vr-title",
+        "slug": make_slug(game_data["name"]),
         "description": game_data["ai_description"],
         "short_description": game_data["short_description"],
         "images": f"pics/{game_data["name"]}",
-        "age_rating": "E",
+        "age_rating": new_rating(game_data["ratings"]["dejus"]["rating"]),
         "min_players": 1,
         "max_players": 4,
         "store_url": game_data["url"],
