@@ -52,17 +52,28 @@ def new_rating(input):
     
     return rating
 
-   
+def single_player():
+    if game_data["categories"]["description"] == "Single-Player":
+        return "yes"
+    else:
+        return "no"
+    
+def multi_player():
+    if game_data["categories"]["description"] == "Multi-player":
+        return "yes"
+    else:
+        return "no"
+
    # Dictionary with column:value pairs
 data = {
         "title": game_data["name"],
         "slug": make_slug(game_data["name"]),
         "description": game_data["ai_description"],
         "short_description": game_data["short_description"],
-        "images": f"pics/{game_data["name"]}",
+        "images": f"pics/{game_data['name']}",
         "age_rating": new_rating(game_data["ratings"]["dejus"]["rating"]),
-        "min_players": 1,
-        "max_players": 4,
+        "single_player": single_player(),
+        "multi_player": multi_player(),
         "store_url": game_data["url"],
         "active": 1,
         "steam_id": game_data["steam_appid"]
