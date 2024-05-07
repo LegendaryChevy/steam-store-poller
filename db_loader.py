@@ -55,41 +55,41 @@ def new_rating(input):
     return rating
 
 def single_player():
-    if game_data["categories"]["description"] == "Single-Player":
-        return "yes"
-    else:
-        return "no"
+    for category in game_data["categories"]:
+        if category["description"] == "Single-Player":
+            return 1
+    return 0
     
 def multi_player():
-    if game_data["categories"]["description"] == "Multi-player":
-        return "yes"
-    else:
-        return "no"
+    for category in game_data["categories"]:
+        if category["description"] == "Multi-player":
+            return 1
+    return 0
 
    # Dictionary with column:value pairs
 
 
 for game in games:
-    
+
     data = {
         "title": game_data["name"],
         "slug": make_slug(game_data["name"]),
         "description": game_data["ai_description"],
         "short_description": game_data["short_description"],
-        "images": f"pics/{game_data['name']}",
+        "primary_image": f"pics/{game_data['name']}",
         "age_rating": new_rating(game_data["ratings"]["dejus"]["rating"]),
-        "single_player": single_player(),
-        "multi_player": multi_player(),
+        "min_players": single_player(),
+        "max_players": multi_player(),
         "store_url": game_data["url"],
         "active": 1,
-        "steam_appid": game_data["steam_appid"]
+        "steam_id": game_data["steam_appid"]
     }
 
 
     steam_appid = game_data["steam_appid"]
 
         # SQL command to check if the steam_appid already exists in the database
-    sql_check = f"SELECT 1 FROM vr_titles WHERE steam_appid = %s"
+    sql_check = f"SELECT 1 FROM vr_titles WHERE steam_id = %s"
     mysql_query.execute(sql_check, (steam_appid,))
 
 # If the steam_appid does not exist in the database then insert the data

@@ -96,7 +96,7 @@ with open('new_games.json') as json_file:
     counter = 0
     for game in data['applist']['apps']:
         vr_tag_present = False
-        if counter >= 1000:
+        if counter >= 100:
             
                 break
         
