@@ -34,21 +34,31 @@ def make_slug(name):
     return slug
 
 
-def new_rating(input):
-    rating=""
-    if input == "l" or input == "AL":
-        rating = "E"
-
-    elif input in range(10, 13) or input == "A10" or input == "A12":
-        rating = "E10+"
-    
-    elif input in range(14, 17) or input == "A14" or input == "A16":
-        rating = "T"
+def new_rating():
+    if 'ratings' in game_data and game_data['ratings'] is not None:
+        if 'dejus' in game_data["ratings"] and 'rating' in game_data["ratings"]['dejus']:
+            input_rating = game_data["ratings"]['dejus']['rating']
         
-    elif input == 18 or input == "A18":
-        rating = "M"
+        elif 'steam_germany' in game_data["ratings"] and 'rating' in game_data["ratings"]['steam_germany']:
+            input_rating = game_data["ratings"]['steam_germany']['rating']
+
+        input = input_rating
+        rating=""
+        if input == "l" or input == "AL" or input == range(0, 6):
+            rating = "E"
+
+        elif input in range(10, 13) or input == "A10" or input == "A12" :
+            rating = "E10+"
+        
+        elif input in range(14, 17) or input == "A14" or input == "A16":
+            rating = "T"
+            
+        elif input == 18 or input == "A18":
+            rating = "M"
+        
+        return rating
     
-    return rating
+    else: return "no_rating"
 
 def single_player(game_data):
     for category in game_data["categories"]:
@@ -76,7 +86,7 @@ with open("game_data_output.json", "r") as f:
             "description": game_data["ai_description"],
             "short_description": game_data["short_description"],
             "images": f"pics/{game_data['name']}",
-            "age_rating": new_rating(game_data["ratings"]["dejus"]["rating"]),
+            "age_rating": new_rating(),
             "single_player": single_player(game_data),
             "multi_player": multi_player(game_data),
             "store_url": game_data["url"],
