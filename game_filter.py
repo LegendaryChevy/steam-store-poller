@@ -95,10 +95,11 @@ with open('new_games.json') as json_file:
     all_games_data = {}
     counter = 0
     for game in data['applist']['apps']:
+        
+        if counter == 2000:
+            break
+        
         vr_tag_present = False
-        if counter >= 100:
-            
-                break
         
         appid = game['appid']
         game_name = game['name']
@@ -153,7 +154,11 @@ with open('new_games.json') as json_file:
 
                     all_games_data[appid] = game_data
 
-                    pic_downloader(game_name, game_details['screenshots'])
+                    if game_details.get('screenshots'):
+                        pic_downloader(game_name, game_details['screenshots'])
+                    else:
+                        print('no screenshots')
+                    
                     strip_keys(all_games_data[appid], keys_to_strip)
                
                     # print(f"VR tag found for game {game_name} with appid {appid}")
