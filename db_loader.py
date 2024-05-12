@@ -35,6 +35,7 @@ def make_slug(name):
 
 
 def new_rating():
+    input_rating = ""
     if 'ratings' in game_data and game_data['ratings'] is not None:
         if 'dejus' in game_data["ratings"] and 'rating' in game_data["ratings"]['dejus']:
             input_rating = game_data["ratings"]['dejus']['rating']
@@ -91,7 +92,8 @@ with open("game_data_output.json", "r") as f:
             "multi_player": multi_player(game_data),
             "store_url": game_data["url"],
             "active": 1,
-            "steam_id": game_data["steam_appid"]
+            "steam_id": game_data["steam_appid"],
+            "is_free": game_data["is_free"]
         }
 
 
