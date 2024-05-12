@@ -121,7 +121,7 @@ with open('new_games.json') as json_file:
             #    print(f"Categories for game {game_name}: {game_details.get('categories', [])}")
              #   print(f"Genres for game {game_name}: {game_details.get('genres', [])}")
             
-            exclude_tags = ['Hentai', 'Mature', 'Sexual Content', 'Nudity', 'NSFW', 'Milf', 'sexy', 'Sexy', 'milf', 'sex', 'porn', 'Porn', 'sex', 'Sex', 'sexual', 'Sexual', 'bukkake']  # Define your exclude tags here.
+            exclude_tags = ['Hentai', 'Lust', 'Mature', 'Sexual Content', 'Nudity', 'NSFW', 'Milf', 'sexy', 'Sexy', 'milf', 'sex', 'porn', 'Porn', 'sex', 'Sex', 'sexual', 'Sexual', 'bukkake']  # Define your exclude tags here.
 
            # Retrieve detailed_description or about_the_game
             try:
