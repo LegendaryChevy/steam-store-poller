@@ -16,7 +16,7 @@ openai_client = OpenAI(api_key= openai_api_key)
 
 def clean_text(text):
     cleaned_text = re.sub(r'[^a-zA-Z0-9 /n/.]', '', text)
-    
+
     text = cleaned_text
 
 # create a new BeautifulSoup object
@@ -32,7 +32,7 @@ def clean_text(text):
 
 def summarize_text_with_openai(text):
     new_text = clean_text(text)
-    
+
     openai_response = openai_client.chat.completions.create(
 
         model = "gpt-3.5-turbo",
