@@ -35,14 +35,14 @@ def summarize_text_with_openai(text):
 
     openai_response = openai_client.chat.completions.create(
 
-        model = "gpt-3.5-turbo",
+        model = "gpt-4o",
         messages = [{
             "role": "user",
             "content":f"{new_text}\n\nSummarize the description while making the game appeal to a family friendly audience for a vr cafe setting.:"
         }
         ],
-        temperature = 0.3,
-        max_tokens = 60
+        temperature = 0.7,
+        max_tokens = 500
     )
 
     return openai_response.choices[0].message.content.strip()
