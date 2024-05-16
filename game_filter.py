@@ -84,7 +84,7 @@ def check_game_data_output(file_names: list):
 
 def fetch_steam_app_details(appid, session):
     url = f'http://store.steampowered.com/api/appdetails/?appids={appid}'
-    logging.info(f"Fetching details for URL: {url}")
+    #logging.info(f"Fetching details for URL: {url}")
 
     base_delay = 3  # initial delay in seconds
     max_retries = 10
@@ -93,6 +93,10 @@ def fetch_steam_app_details(appid, session):
         try:
             response = session.get(url)
             if response.status_code == 200:
+                #ip_test_response = session.get("http://checkip.amazonaws.com/")
+                #ip_address = ip_test_response.text.strip()
+                #logging.info(f"Request from IP address: {ip_address}")
+                #time.sleep(0.5)
                 return response.json()
             elif response.status_code == 429:
                 delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
@@ -124,21 +128,13 @@ def append_to_non_vr_list(file_path, appid):
         f.write(f"{appid}\n")
 
 # Initialize the API Gateway for IP rotation outside the function
-url = 'http://store.steampowered.com/api/appdetails/'
+url = 'https://store.steampowered.com/api/appdetails/'
 gateway = ApiGateway(url, access_key_id=os.getenv('AWS_ACCESS_KEY'), access_key_secret=os.getenv('AWS_SECRET_KEY'))
 gateway.start()
 
-# Print the endpoints to check if they are correct
-#logging.info(f"API Gateway endpoints: {gateway.endpoints}")
-
 session = requests.Session()
 
-# Ensure each specific URL is mounted individually
-for endpoint in gateway.endpoints:
-    session.mount(endpoint, gateway)
-
-# Check if the session is properly mounted
-#logging.info(f"Session adapters: {session.adapters}")
+session.mount(url, gateway)
 
 check_and_create_files(['new_games.json', 'old_games.json'])
 check_game_data_output(['game_data_output.json'])
