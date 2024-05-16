@@ -7,6 +7,8 @@ from ai_description_tool import summarize_text_with_openai
 from games_list_comparer import comparer
 from picture_downloader import pic_downloader
 import time
+from requests_ip_rotator import ApiGateway
+import random
 
 # Load environment variables
 load_dotenv()
@@ -54,7 +56,7 @@ def check_game_data_output(file_names: list):
     basic_structure = {}
 
     for name in file_names:
-        # Check if file exists
+        # Check iffile exists
         if os.path.isfile(name):
            with open(name, 'r') as f:
                 # Load existing data
@@ -75,19 +77,37 @@ def check_game_data_output(file_names: list):
             with open(name, 'w') as f:
                 json.dump(basic_structure, f)
 
-def fetch_steam_app_details(appid):
+def fetch_steam_app_details(appid, session):
     url = f'http://store.steampowered.com/api/appdetails/?appids={appid}'
-    for attempt in range(3):
+    print(f"Fetching details for URL: {url}")
+
+    base_delay = 1  # initial delay in seconds
+    max_retries = 5
+
+    for attempt in range(max_retries):
         try:
-            response = requests.get(url)
+            #print(f"Attempt {attempt + 1}: Making request to {url}")
+            response = session.get(url)
+            #print(f"Response URL: {response.url}")
             if response.status_code == 200:
                 return response.json()
+            elif response.status_code == 429:
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                print(f"Rate limited. Waiting for {delay:.2f} seconds before retrying...")
+                time.sleep(delay)
+                continue
+            elif response.status_code == 400:
+                print(f"Request failed for appid:{appid}, status code: {response.status_code}")
+                print(f"Response content: {response.content.decode('utf-8')}")
+                break
             else:
                 print(f"Request failed for appid:{appid}, status code: {response.status_code}")
+                print(f"Response content: {response.content.decode('utf-8')}")
         except requests.exceptions.RequestException as e:
             print(f"Attempt {attempt+1} failed for appid:{appid}: {e}")
-        time.sleep(1)  # Wait for 1 second before retrying
-    print(f"Failed to retrieve app details for appid:{appid} after 3 attempts")
+        time.sleep(base_delay)  # Wait for base delay before retrying
+
+    print(f"Failed to retrieve app details for appid:{appid} after {max_retries} attempts")
     return None
 
 def load_non_vr_list(file_path):
@@ -99,6 +119,23 @@ def load_non_vr_list(file_path):
 def append_to_non_vr_list(file_path, appid):
     with open(file_path, 'a') as f:
         f.write(f"{appid}\n")
+
+# Initialize the API Gateway for IP rotation outside the function
+url = 'http://store.steampowered.com/api/appdetails/'
+gateway = ApiGateway(url, access_key_id=os.getenv('AWS_ACCESS_KEY'), access_key_secret=os.getenv('AWS_SECRET_KEY'))
+gateway.start()
+
+# Print the endpoints to check if they are correct
+#print("API Gateway endpoints:", gateway.endpoints)
+
+session = requests.Session()
+
+# Ensure each specific URL is mounted individually
+for endpoint in gateway.endpoints:
+    session.mount(endpoint, gateway)
+
+# Check if the session is properly mounted
+#print("Session adapters:", session.adapters)
 
 check_and_create_files(['new_games.json', 'old_games.json'])
 check_game_data_output(['game_data_output.json'])
@@ -127,15 +164,17 @@ for game in new_games['applist']['apps']:
 
     appid = game['appid']
     if str(appid) in non_vr_app_ids:
-        print("skipping known non-vr game")
+        print(f"Skipping known non-vr game {appid}")
         continue
 
     game_name = game['name']
     game_details = None
     print(f"Getting details for game {game_name} with appid {appid}")
 
-    game_data = fetch_steam_app_details(appid)
+    game_data = fetch_steam_app_details(appid, session)
     if game_data is None:
+        non_vr_app_ids.add(str(appid))
+        append_to_non_vr_list(non_vr_file, appid)
         continue
 
     if str(appid) in game_data and 'data' in game_data[str(appid)]:
