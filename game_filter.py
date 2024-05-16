@@ -9,9 +9,14 @@ from picture_downloader import pic_downloader
 import time
 from requests_ip_rotator import ApiGateway
 import random
+from concurrent.futures import ThreadPoolExecutor
+import logging
 
 # Load environment variables
 load_dotenv()
+
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s: %(levelname)s: %(message)s')
 
 def strip_keys(data, keys_to_strip):
     if isinstance(data, dict):
@@ -49,14 +54,14 @@ def check_and_create_files(file_names: list):
                 json.dump(data, f)
         else:
             # If the file does not exist, create it with the basic structure
-            with open(name, 'w') as f:
+            with open(name, 'w')as f:
                 json.dump(basic_structure, f)
 
 def check_game_data_output(file_names: list):
     basic_structure = {}
 
     for name in file_names:
-        # Check iffile exists
+        # Check if file exists
         if os.path.isfile(name):
            with open(name, 'r') as f:
                 # Load existing data
@@ -68,7 +73,7 @@ def check_game_data_output(file_names: list):
 
                 # Check if game_data_output has empty dict
                 if "{}" in str(data.get("game_data_output")):
-                    print(f"Empty dictionary found in game_data_output within {name}")
+                    logging.warning(f"Empty dictionary found in game_data_output within {name}")
 
            with open(name, 'w') as f:
                json.dump(data, f)
@@ -79,35 +84,33 @@ def check_game_data_output(file_names: list):
 
 def fetch_steam_app_details(appid, session):
     url = f'http://store.steampowered.com/api/appdetails/?appids={appid}'
-    print(f"Fetching details for URL: {url}")
+    logging.info(f"Fetching details for URL: {url}")
 
-    base_delay = 1  # initial delay in seconds
-    max_retries = 5
+    base_delay = 3  # initial delay in seconds
+    max_retries = 10
 
     for attempt in range(max_retries):
         try:
-            #print(f"Attempt {attempt + 1}: Making request to {url}")
             response = session.get(url)
-            #print(f"Response URL: {response.url}")
             if response.status_code == 200:
                 return response.json()
             elif response.status_code == 429:
                 delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
-                print(f"Rate limited. Waiting for {delay:.2f} seconds before retrying...")
+                logging.warning(f"Rate limited. Waiting for {delay:.2f} seconds before retrying...")
                 time.sleep(delay)
                 continue
             elif response.status_code == 400:
-                print(f"Request failed for appid:{appid}, status code: {response.status_code}")
-                print(f"Response content: {response.content.decode('utf-8')}")
+                logging.error(f"Request failed for appid:{appid}, status code: {response.status_code}")
+                logging.error(f"Response content: {response.content.decode('utf-8')}")
                 break
             else:
-                print(f"Request failed for appid:{appid}, status code: {response.status_code}")
-                print(f"Response content: {response.content.decode('utf-8')}")
+                logging.error(f"Request failed for appid:{appid}, status code: {response.status_code}")
+                logging.error(f"Response content: {response.content.decode('utf-8')}")
         except requests.exceptions.RequestException as e:
-            print(f"Attempt {attempt+1} failed for appid:{appid}: {e}")
+            logging.error(f"Attempt {attempt + 1} failed for appid:{appid}: {e}")
         time.sleep(base_delay)  # Wait for base delay before retrying
 
-    print(f"Failed to retrieve app details for appid:{appid} after {max_retries} attempts")
+    logging.error(f"Failed to retrieve app details for appid:{appid} after {max_retries} attempts")
     return None
 
 def load_non_vr_list(file_path):
@@ -126,7 +129,7 @@ gateway = ApiGateway(url, access_key_id=os.getenv('AWS_ACCESS_KEY'), access_key_
 gateway.start()
 
 # Print the endpoints to check if they are correct
-#print("API Gateway endpoints:", gateway.endpoints)
+#logging.info(f"API Gateway endpoints: {gateway.endpoints}")
 
 session = requests.Session()
 
@@ -135,12 +138,12 @@ for endpoint in gateway.endpoints:
     session.mount(endpoint, gateway)
 
 # Check if the session is properly mounted
-#print("Session adapters:", session.adapters)
+#logging.info(f"Session adapters: {session.adapters}")
 
 check_and_create_files(['new_games.json', 'old_games.json'])
 check_game_data_output(['game_data_output.json'])
 poll_steam()
-comparer()
+# comparer() - Disable for now if causing issues
 
 # Load new games
 with open('new_games.json') as json_file:
@@ -157,25 +160,22 @@ non_vr_app_ids = load_non_vr_list(non_vr_file)
 all_games_data = {}
 counter = 0
 
-for game in new_games['applist']['apps']:
-
-    if counter >= 10:
-        break
-
+def process_game(game):
+    global counter
     appid = game['appid']
     if str(appid) in non_vr_app_ids:
-        print(f"Skipping known non-vr game {appid}")
-        continue
+        #logging.info(f"Skipping known non-vr game {appid}")
+        return
 
     game_name = game['name']
     game_details = None
-    print(f"Getting details for game {game_name} with appid {appid}")
+    logging.info(f"Getting details for game {game_name} with appid {appid}")
 
     game_data = fetch_steam_app_details(appid, session)
     if game_data is None:
         non_vr_app_ids.add(str(appid))
         append_to_non_vr_list(non_vr_file, appid)
-        continue
+        return
 
     if str(appid) in game_data and 'data' in game_data[str(appid)]:
         game_details = game_data[str(appid)]['data']  # Accessing the game details
@@ -189,7 +189,7 @@ for game in new_games['applist']['apps']:
         else:
             bad_description = 'this is ok'
     except Exception as e:
-        print(f'There was an error: {str(e)}')
+        logging.error(f'There was an error: {str(e)}')
 
     if bad_description is not None:
         words = bad_description.split()
@@ -210,11 +210,11 @@ for game in new_games['applist']['apps']:
         if game_details.get('screenshots'):
             pic_downloader(game_name, game_details['screenshots'])
         else:
-            print('no screenshots')
+            logging.info('No screenshots')
 
         strip_keys(all_games_data[appid], keys_to_strip)
 
-        print(f"game #{counter}:{game_name} is vr")
+        logging.info(f"Game #{counter}: {game_name} is VR")
         counter += 1
 
         if game_details is not None and 'detailed_description' in game_details:
@@ -223,11 +223,14 @@ for game in new_games['applist']['apps']:
                 summarized_description = summarize_text_with_openai(description)
                 game_details['ai_description'] = summarized_description
             except Exception as e:
-                print(f"Error during description summarization: {e}")
+                logging.error(f"Error during description summarization: {e}")
                 summarized_description = None
     else:
         non_vr_app_ids.add(str(appid))
         append_to_non_vr_list(non_vr_file, appid)
+
+with ThreadPoolExecutor(max_workers=10) as executor:
+    executor.map(process_game, new_games['applist']['apps'])
 
 # Write the updated old games back to old_games.json
 old_games['applist']['apps'].extend(new_games['applist']['apps'])
@@ -246,4 +249,4 @@ with open('game_data_output.json', 'r') as f:
 with open('game_data_output.json', 'w') as f:
     json.dump(existing_data, f, indent=4)
 
-print('done dumping')
+logging.info('Done dumping')
