@@ -25,6 +25,6 @@ def pic_downloader(game_name, screenshots):
 
             # Replace the URL in the screenshots with the local file path
             screenshots[i]['path_full'] = image_file_path
-        #time.sleep(1.5)
+        time.sleep(0.5)
     # Return the updated screenshots
     return screenshots

@@ -2,12 +2,18 @@ import requests
 import json
 
 def poll_steam():
-    response = requests.get('https://api.steampowered.com/ISteamApps/GetAppList/v2/')
-    data = response.json()
+    try:
+        response = requests.get('https://api.steampowered.com/ISteamApps/GetAppList/v2/')
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        data = response.json()
 
-    open('new_games.json', 'w').close()
+        with open('new_games.json', 'w') as f:
+            json.dump(data, f)
+            print("Done polling.")
+    except requests.exceptions.RequestException as e:
+        print(f"Error while polling Steam API: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
 
-    with open('new_games.json', 'w') as f:
-        json.dump(data, f)
-        print("done polling.")
-
+if __name__ == "__main__":
+    poll_steam()
