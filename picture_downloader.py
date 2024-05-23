@@ -1,8 +1,26 @@
 import os
+import re
 import requests
 import time
+from unidecode import unidecode
+
+def make_url_friendly(name):
+    # Transliterate Unicode characters to closest ASCII representation
+    name = unidecode(name)
+    # Convert to lowercase
+    name = name.lower()
+    # Replace spaces with dashes
+    name = name.replace(' ', '-')
+    # Remove any non-alphanumeric characters except dashes
+    name = re.sub(r'[^a-z0-9\-]', '', name)
+    # Replace any non-ASCII characters with "non-ascii"
+    name = re.sub(r'[^a-z0-9\-]', 'non-ascii', name)
+    return name
 
 def pic_downloader(game_name, screenshots):
+    # Make the game_name URL friendly
+    game_name = make_url_friendly(game_name)
+
     # Form directory path
     dir_path = os.path.join('pics', game_name)
 
