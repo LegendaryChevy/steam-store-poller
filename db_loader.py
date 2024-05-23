@@ -51,7 +51,7 @@ def new_rating(game_data):
         return rating
 
     else:
-        return "no_rating"
+        return "NR"
 
 def single_player(game_data):
     for category in game_data["categories"]:
