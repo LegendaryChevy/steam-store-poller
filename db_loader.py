@@ -149,6 +149,7 @@ def main(update, replace_images):
             sql_check = f"SELECT id FROM vr_titles WHERE steam_id = %s"
             mysql_query.execute(sql_check, (steam_appid,))
             result = mysql_query.fetchone()
+            mysql_query.fetchall()  # Fetch remaining results, if any, to avoid the unread results error
 
             if result:
                 vr_title_id = result[0]
@@ -181,6 +182,12 @@ def main(update, replace_images):
                 # Commit the changes to the database
                 mysql_client.commit()
                 print("Data inserted successfully")
+
+            # Ensure the cursor is cleared before the next iteration
+            mysql_query.fetchall()
+
+    mysql_query.close()
+    mysql_client.close()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Load game data into the database.')
