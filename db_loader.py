@@ -6,8 +6,6 @@ import json
 
 load_dotenv()
 
-
-
 # Retrieve database credentials
 db_config = {
     'user': os.getenv('MYSQL_USER'),
@@ -22,24 +20,21 @@ try:
     print('Successfully connected to the database.')
 
     mysql_query = mysql_client.cursor()
-   
+
 except Error as err:
-    print(f"Error: {err}") 
+    print(f"Error: {err}")
 
-
-
-def make_slug(name):            
+def make_slug(name):
     words = name.split(" ")
     slug = "-".join(words)
     return slug
-
 
 def new_rating():
     input_rating = ""
     if 'ratings' in game_data and game_data['ratings'] is not None:
         if 'dejus' in game_data["ratings"] and 'rating' in game_data["ratings"]['dejus']:
             input_rating = game_data["ratings"]['dejus']['rating']
-        
+
         elif 'steam_germany' in game_data["ratings"] and 'rating' in game_data["ratings"]['steam_germany']:
             input_rating = game_data["ratings"]['steam_germany']['rating']
 
@@ -50,15 +45,15 @@ def new_rating():
 
         elif input in range(10, 13) or input == "A10" or input == "A12" :
             rating = "E10+"
-        
+
         elif input in range(14, 17) or input == "A14" or input == "A16":
             rating = "T"
-            
+
         elif input == 18 or input == "A18":
             rating = "M"
-        
+
         return rating
-    
+
     else: return "no_rating"
 
 def single_player(game_data):
@@ -66,20 +61,24 @@ def single_player(game_data):
         if category["description"] == "Single-Player":
             return 1
     return 0
-    
+
 def multi_player(game_data):
     for category in game_data["categories"]:
         if category["description"] == "Multi-player":
             return 1
     return 0
 
-   # Dictionary with column:value pairs
-
+# Dictionary with column:value pairs
 with open("game_data_output.json", "r") as f:
+
     games = json.load(f)
     for app_id, game_info in games.items():
         game_data = game_info[app_id]["data"]
 
+        # Check if 'ai_description' key exists
+        if 'ai_description' not in game_data:
+            print(f"Missing 'ai_description' in: {game_data['name']} - falling back to detailed description")
+            game_data["ai_description"] = game_data["detailed_description"]
 
         data = {
             "title": game_data["name"],
@@ -96,26 +95,25 @@ with open("game_data_output.json", "r") as f:
             "is_free": game_data["is_free"]
         }
 
-
         steam_appid = game_data["steam_appid"]
 
-            # SQL command to check if the steam_appid already exists in the database
+        # SQL command to check if the steam_appid already exists in the database
         sql_check = f"SELECT 1 FROM vr_titles WHERE steam_id = %s"
         mysql_query.execute(sql_check, (steam_appid,))
 
-    # If the steam_appid does not exist in the database then insert the data
+        # If the steam_appid does not exist in the database then insert the data
         if not mysql_query.fetchone():
-                # Dynamically building the SQL statement
+            # Dynamically building the SQL statement
             columns = ', '.join(data.keys())
             placeholders = ', '.join(['%s'] * len(data))
             sql = f"INSERT INTO vr_titles ({columns}) VALUES ({placeholders})"
-                
-                # Executing the SQL command
+
+            # Executing the SQL command
             mysql_query.execute(sql, list(data.values()))
-                
-                # Committing the changes to the database
+
+            # Committing the changes to the database
             mysql_client.commit()
-                
+
             print("Data inserted successfully")
 
         else:
