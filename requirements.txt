@@ -1,0 +1,5 @@
+requests_ip_rotator
+mysql-connector-python
+Unidecode
+beautifulsoup4
+openai

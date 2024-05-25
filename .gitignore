@@ -1,2 +1,5 @@
 .env
 pics/*
+old_games.json
+new_games.json
+game_data_output.json

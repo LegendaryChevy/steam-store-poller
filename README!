@@ -1,0 +1,104 @@
+Steam Store Poller
+Description
+steam-store-poller is a project designed to build a database of family-friendly VR games from the Steam store. It includes two main executables: game_filter.py and db_loader.py.
+
+game_filter.py: Fetches games from the Steam store and filters them to include only family-friendly VR games that haven't already been downloaded.
+db_loader.py: Loads the filtered game data into the vr_titles table in the aagz database.
+
+Prerequisites
+Make sure you have the following dependencies installed:
+Python 3
+requests_ip_rotator
+mysql-connector-python
+unidecode
+bs4
+openai
+
+Installation
+Clone the Repository:
+PyPI
+requests-ip-rotator
+Rotate through IPs in Python using AWS API Gateway.
+Image
+PyPI
+mysql-connector-python
+MySQL driver written in Python
+Image
+PyPI
+Unidecode
+ASCII transliterations of Unicode text
+Image
+PyPI
+beautifulsoup4
+Screen-scraping library
+Image
+PyPI
+openai
+The official Python library for the openai API
+Image
+    git clone https://github.com/yourusername/steam-store-poller.git
+    cd steam-store-poller
+    
+Set Up Environment Variables:
+
+    Fill out the .env file with all the required fields. An example .env file might look like this:
+    DB_HOST=your_db_host
+    DB_USER=your_db_user
+    DB_PASS=your_db_password
+    DB_NAME=aagz
+    
+Install Dependencies:
+    pip install -r requirements.txt
+    
+Set Up Database:
+
+    Execute the table_vr_titles.sql file to create the necessary table in your database.
+    mysql -u your_db_user -p your_db_name < table_vr_titles.sql
+    
+Usage
+Running the Scripts
+Navigate to the Project Directory:
+    cd path/to/steam-store-poller
+    
+Run game_filter.py:
+    python3 game_filter.py
+    
+Run db_loader.py:
+    python3 db_loader.py
+    
+Example Commands
+To filter games:
+    python3 game_filter.py
+    
+To load filtered games into the database:
+
+  python3 db_loader.py
+
+
+Open your terminal: You can open your terminal application on your system (e.g., GNOME Terminal, Konsole, etc.).
+
+Navigate to the directory where your script is located: Use the cd command to change to the directory where you saved run_scripts.sh. For example, if you saved it in /home/legendarychevy/projects/aagz/steam-store-poller/main, you would run:
+   cd /home/legendarychevy/projects/aagz/steam-store-poller/main
+   
+Make the script executable: Use the chmod command to change the permissions of the script to be executable. Run the following command:
+   chmod +x poll_steam.sh
+   
+Verify the file is executable: You can check the permissions of the file to confirm it is now executable by running:
+   ls -l poll_steam.sh
+   
+You should see something like this:
+   -rwxr-xr-x 1 your_username your_group  1234 Oct  4 12:34 poll_steam.sh
+   
+The rwx means read, write, and execute permissions for the owner.
+
+Execute the script: Finally, you can run the script by typing:
+   ./poll_steam.sh
+   
+This should execute the script and run your Python programs in the specified order. 
+    
+Database Connection
+As long as the related steps from the Installation section are followed, the database connection will be configured automatically.
+
+Contact Information
+For any assistance, please contact:
+Email: leeson73@gmail.com
