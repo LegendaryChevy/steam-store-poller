@@ -174,7 +174,7 @@ def main(update, replace_images):
             sql_check = f"SELECT id FROM vr_titles WHERE steam_id = %s"
             mysql_query.execute(sql_check, (steam_appid,))
             result = mysql_query.fetchone()
-            mysql_query.fetchall() 
+            mysql_query.fetchall()
 
             if result:
                 vr_title_id = result[0]
@@ -202,7 +202,7 @@ def main(update, replace_images):
                 vr_title_id = mysql_query.lastrowid
 
                 # Handle images
-                handle_images(mysql_query, vr_title_id, game_name_url_friendly, game_data, current_timestamp, replace_images)
+                handle_images(mysql_query, vr_title_id, game_data, current_timestamp, replace_images)
 
                 # Commit the changes to the database
                 mysql_client.commit()
