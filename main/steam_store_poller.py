@@ -1,12 +1,17 @@
 import requests
 import json
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 def poll_steam():
     try:
         response = requests.get('https://api.steampowered.com/ISteamApps/GetAppList/v2/')
         response.raise_for_status()  # Raise an exception for HTTP errors
         data = response.json()
-        with open('../data/new_games.json', 'w') as f:
+        with open(f'{os.getenv("APP_PATH")}/data/new_games.json', 'w') as f:
             json.dump(data, f)
             print("Done polling.")
     except requests.exceptions.RequestException as e:

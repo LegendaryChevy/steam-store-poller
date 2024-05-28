@@ -11,9 +11,51 @@ from requests_ip_rotator import ApiGateway
 import random
 from concurrent.futures import ThreadPoolExecutor
 import logging
+import mysql.connector
+from mysql.connector import connect, Error, pooling
+import sys
 
 # Load environment variables
 load_dotenv()
+
+# Retrieve database credentials
+db_config = {
+    'user': os.getenv('MYSQL_USER'),
+    'password': os.getenv('MYSQL_PASSWORD'),
+    'host': os.getenv('MYSQL_HOST'),
+    'database': os.getenv('MYSQL_DB'),
+}
+
+def create_connection_pool():
+    try:
+        pool = pooling.MySQLConnectionPool(
+            pool_name="mypool",
+            pool_size=10,
+            **db_config
+        )
+        return pool
+    except Error as err:
+        logging.error(f"MySQL Error: {err}")
+        sys.exit()
+
+# Create a connection pool
+connection_pool = create_connection_pool()
+
+def check_game_in_db(steam_appid):
+    try:
+        conn = connection_pool.get_connection()
+        cursor = conn.cursor()
+        sql_check = "SELECT id FROM vr_titles WHERE steam_id = %s"
+        cursor.execute(sql_check, (steam_appid,))
+        result = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if result:
+            return True
+        return False
+    except Error as e:
+        logging.error(f"MySQL Error: {e}")
+        return False
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s: %(levelname)s: %(message)s')
@@ -34,11 +76,11 @@ def check_and_create_files(file_names: list):
     basic_structure = {"applist": {"apps": []}}
 
     for name in file_names:
-        
+
 
         # Check if file exists
-        if os.path.isfile(f'../data/{name}'):
-            with open(f'../data/{name}', 'r') as f:
+        if os.path.isfile(f'{os.getenv("APP_PATH")}/data/{name}'):
+            with open(f'{os.getenv("APP_PATH")}/data/{name}', 'r') as f:
                 # Load existing data
                 try:
                     data = json.load(f)
@@ -52,11 +94,11 @@ def check_and_create_files(file_names: list):
                     data["applist"] = {"apps": []}
 
             # Write updated data to file
-            with open(f'../data/{name}', 'w') as f:
+            with open(f'{os.getenv("APP_PATH")}/data/{name}', 'w') as f:
                 json.dump(data, f)
         else:
             # If the file does not exist, create it with the basic structure
-            with open(f'../data/{name}', 'w')as f:
+            with open(f'{os.getenv("APP_PATH")}/data/{name}', 'w')as f:
                 json.dump(basic_structure, f)
 
 def check_game_data_output(file_names: list):
@@ -65,7 +107,7 @@ def check_game_data_output(file_names: list):
     for name in file_names:
         # Check if file exists
         if os.path.isfile(name):
-           with open(f'../data/{name}', 'r') as f:
+           with open(f'{os.getenv("APP_PATH")}/data/{name}', 'r') as f:
                 # Load existing data
                 try:
                     data = json.load(f)
@@ -77,11 +119,11 @@ def check_game_data_output(file_names: list):
                 if "{}" in str(data.get("game_data_output")):
                     logging.warning(f"Empty dictionary found in game_data_output within {name}")
 
-           with open(f'../data/{name}', 'w') as f:
+           with open(f'{os.getenv("APP_PATH")}/data/{name}', 'w') as f:
                json.dump(data, f)
         else:
             # If the file does not exist, create it with the basic structure
-            with open(f'../data/{name}', 'w') as f:
+            with open(f'{os.getenv("APP_PATH")}/data/{name}', 'w') as f:
                 json.dump(basic_structure, f)
 
 def fetch_steam_app_details(appid, session):
@@ -120,13 +162,13 @@ def fetch_steam_app_details(appid, session):
     return None
 
 def load_non_vr_list(file_path):
-    if os.path.isfile(f'../data/{file_path}'):
-        with open(f'../data/{file_path}', 'r') as f:
+    if os.path.isfile(f'{os.getenv("APP_PATH")}/data/{file_path}'):
+        with open(f'{os.getenv("APP_PATH")}/data/{file_path}', 'r') as f:
             return set(f.read().splitlines())
     return set()
 
 def append_to_non_vr_list(file_path, appid):
-    with open(f'../data/{file_path}', 'a') as f:
+    with open(f'{os.getenv("APP_PATH")}/data/{file_path}', 'a') as f:
         f.write(f"{appid}\n")
 
 # Initialize the API Gateway for IP rotation outside the function
@@ -144,11 +186,11 @@ poll_steam()
 comparer() #- Disable for now if causing issues
 
 # Load new games
-with open('../data/new_games.json') as json_file:
+with open(f'{os.getenv("APP_PATH")}/data/new_games.json') as json_file:
     new_games = json.load(json_file)
 
 # Load old games
-with open('../data/old_games.json') as json_file:
+with open(f'{os.getenv("APP_PATH")}/data/old_games.json') as json_file:
     old_games = json.load(json_file)
 
 # Load known non-VR app IDs
@@ -161,11 +203,15 @@ counter = 0
 def process_game(game):
     global counter
     appid = game['appid']
+    game_name = game['name']
     if str(appid) in non_vr_app_ids:
         #logging.info(f"Skipping known non-vr game {appid}")
         return
 
-    game_name = game['name']
+    if check_game_in_db(appid):
+        logging.info(f"Skipping game already in our database: {game_name} with appid {appid}")
+        return
+
     game_details = None
     #logging.info(f"Getting details for game {game_name} with appid {appid}")
 
@@ -227,24 +273,26 @@ def process_game(game):
         non_vr_app_ids.add(str(appid))
         append_to_non_vr_list(non_vr_file, appid)
 
+    time.sleep(1)
+
 with ThreadPoolExecutor(max_workers=10) as executor:
     executor.map(process_game, new_games['applist']['apps'])
 
 # Write the updated old games back to old_games.json
 old_games['applist']['apps'].extend(new_games['applist']['apps'])
-with open('../data/old_games.json', 'w') as f:
+with open(f'{os.getenv("APP_PATH")}/data/old_games.json', 'w') as f:
     json.dump(old_games, f)
 
 # Clear new_games.json as all games have been processed
-with open('../data/new_games.json', 'w') as f:
+with open(f'{os.getenv("APP_PATH")}/data/new_games.json', 'w') as f:
     json.dump({"applist": {"apps": []}}, f)
 
 # Save all game data to game_data_output.json
-with open('../data/game_data_output.json', 'r') as f:
+with open(f'{os.getenv("APP_PATH")}/data/game_data_output.json', 'r') as f:
     existing_data = json.load(f)
     existing_data.update(all_games_data)
 
-with open('../data/game_data_output.json', 'w') as f:
+with open(f'{os.getenv("APP_PATH")}/data/game_data_output.json', 'w') as f:
     json.dump(existing_data, f, indent=4)
 
 logging.info('Done dumping')

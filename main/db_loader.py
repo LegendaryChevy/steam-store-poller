@@ -174,7 +174,7 @@ def main(update, replace_images):
             sql_check = f"SELECT id FROM vr_titles WHERE steam_id = %s"
             mysql_query.execute(sql_check, (steam_appid,))
             result = mysql_query.fetchone()
-            mysql_query.fetchall()  # Fetch remaining results, if any, to avoid the unread results error
+            mysql_query.fetchall() 
 
             if result:
                 vr_title_id = result[0]
