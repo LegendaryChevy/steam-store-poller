@@ -19,10 +19,10 @@ def make_url_friendly(name):
 
 def pic_downloader(game_name, screenshots):
     # Make the game_name URL friendly
-    game_name = make_url_friendly(game_name)
+    game_name_friendly = make_url_friendly(game_name)
 
     # Form directory path
-    dir_path = os.path.join('../pics', game_name)
+    dir_path = os.path.join(os.getenv('IMAGES_PATH_FULL'), game_name_friendly)
 
     # Create directory if it doesn't exist
     if not os.path.exists(dir_path):

@@ -32,10 +32,12 @@ def make_url_friendly(name):
     return name
 
 def transform_image_path(path):
-    # Extract folder name and image name
+    # Split the path into parts
     parts = path.split('/')
-    folder_name = parts[1]
-    image_name = parts[2]
+
+    # Get the last and second last elements
+    image_name = parts[-1]
+    folder_name = parts[-2]
 
     # Make the folder name URL-friendly
     folder_name_url_friendly = make_url_friendly(folder_name)
