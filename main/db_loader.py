@@ -27,7 +27,23 @@ def make_url_friendly(name):
     name = name.replace(' ', '-')
     # Remove any non-alphanumeric characters except dashes
     name = re.sub(r'[^a-z0-9\-]', '', name)
+    # Replace any non-ASCII characters with "non-ascii"
+    name = re.sub(r'[^a-z0-9\-]', 'non-ascii', name)
     return name
+
+def transform_image_path(path):
+    # Extract folder name and image name
+    parts = path.split('/')
+    folder_name = parts[1]
+    image_name = parts[2]
+
+    # Make the folder name URL-friendly
+    folder_name_url_friendly = make_url_friendly(folder_name)
+
+    # Construct the new path
+    new_path = f"images/titles/{folder_name_url_friendly}/{image_name}"
+    return new_path
+
 
 def new_rating(game_data):
     input_rating = ""
@@ -65,7 +81,7 @@ def multi_player(game_data):
             return 1
     return 0
 
-def handle_images(mysql_query, vr_title_id, game_name_url_friendly, game_data, current_timestamp, replace_images):
+def handle_images(mysql_query, vr_title_id, game_data, current_timestamp, replace_images):
     if replace_images:
         delete_images_sql = "DELETE FROM vr_title_images WHERE vr_title_id = %s"
         mysql_query.execute(delete_images_sql, (vr_title_id,))
@@ -73,11 +89,14 @@ def handle_images(mysql_query, vr_title_id, game_name_url_friendly, game_data, c
     if "screenshots" in game_data:
         for i, screenshot in enumerate(game_data["screenshots"]):
             is_primary = 1 if i == 0 else 0
-            file_path = f"images/titles/{game_name_url_friendly}/image_{i}.jpg"
+            original_path = screenshot['path_full']
+            file_path = transform_image_path(original_path)
+
             if not replace_images:
                 # Check if the image already exists
                 check_image_sql = "SELECT 1 FROM vr_title_images WHERE vr_title_id = %s AND file_path = %s"
                 mysql_query.execute(check_image_sql, (vr_title_id, file_path))
+
                 if mysql_query.fetchone():
                     continue
 
@@ -98,6 +117,7 @@ def handle_images(mysql_query, vr_title_id, game_name_url_friendly, game_data, c
         print("Images handled successfully")
     else:
         print(f"No screenshots found for: {game_data['name']} (Steam ID: {game_data['steam_appid']})")
+
 
 def main(update, replace_images):
     try:
@@ -165,7 +185,7 @@ def main(update, replace_images):
                     print(f"Data updated successfully for: {game_data['name']} (Steam ID: {steam_appid})")
 
                     # Handle images based on the replace_images flag
-                    handle_images(mysql_query, vr_title_id, game_name_url_friendly, game_data, current_timestamp, replace_images)
+                    handle_images(mysql_query, vr_title_id, game_data, current_timestamp, replace_images)
                     mysql_client.commit()
                 else:
                     print(f"Skipping existing entry: {game_data['name']} (Steam ID: {steam_appid})")
