@@ -32,6 +32,12 @@ Loads the filtered game data into the vr_titles table in the aagz database.
 pip install -r requirements.txt
     
 ## Set Up Database:
+In terminal/command line, enter:
+sudo mysql;
+'your computer password'
+create database 'example-name';
+exit mysql with 'CTRL Z'
+
 Execute table_vr_titles.sql in the terminal/command line:
 sudo mysql -u your_db_user -p your_db_name < table_vr_titles.sql
     
