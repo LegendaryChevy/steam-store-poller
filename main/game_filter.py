@@ -224,7 +224,7 @@ def process_game(game):
     if str(appid) in game_data and 'data' in game_data[str(appid)]:
         game_details = game_data[str(appid)]['data']  # Accessing the game details
 
-    exclude_tags = ['hentai', 'lust', 'mature', 'sexual content', 'nudity', 'nsfw', 'sexy', 'milf', 'sex', 'porn', 'sexual', 'bukkake']
+    exclude_tags = ['hentai', 'dick', 'vagina', 'pussy', 'cock', 'tits', 'slut', 'whore', 'cum', 'erotic', 'explicit', '18+', 'mature', 'bdsm', 'uncensored', 'intimate', 'lewd', 'yoai', 'yuri', 'incest', 'ecchi',  'fetish', 'dominatrix', 'femdom', 'mistress', 'mistresses', 'lust', 'mature', 'sexual content', 'nudity', 'nsfw', 'sexy', 'milf', 'sex', 'porn', 'sexual', 'bukkake']
 
     vr_tag_present = False
     try:
