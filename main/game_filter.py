@@ -128,7 +128,7 @@ def check_game_data_output(file_names: list):
 
 def fetch_steam_app_details(appid, session):
     url = f'http://store.steampowered.com/api/appdetails/?appids={appid}'
-    #logging.info(f"Fetching details for URL: {url}")
+    logging.info(f"Fetching details for URL: {url}")
 
     base_delay = 3  # initial delay in seconds
     max_retries = 10
@@ -224,7 +224,7 @@ def process_game(game):
     if str(appid) in game_data and 'data' in game_data[str(appid)]:
         game_details = game_data[str(appid)]['data']  # Accessing the game details
 
-    exclude_tags = ['Hentai', 'hentai', 'Lust', 'lust', 'Mature', 'mature', 'Sexual Content', 'sexual content', 'Nudity', 'nudity', 'NSFW', 'nsfw', 'Milf', 'sexy', 'Sexy', 'milf', 'sex', 'porn', 'Porn', 'Sex', 'sexual', 'Sexual', 'bukkake']
+    exclude_tags = ['hentai', 'lust', 'mature', 'sexual content', 'nudity', 'nsfw', 'sexy', 'milf', 'sex', 'porn', 'sexual', 'bukkake']
 
     vr_tag_present = False
     try:
@@ -236,7 +236,7 @@ def process_game(game):
         logging.error(f'There was an error: {str(e)}')
 
     if bad_description is not None:
-        words = bad_description.split()
+        words = bad_description.lower().split()
     else:
         words = []
 
@@ -246,7 +246,7 @@ def process_game(game):
                         any([genre.get('description', '') == 'VR Only' or genre.get('description', '') == 'VR Supported' and genre.get('description', '') not in exclude_tags
                              for genre in game_details.get('genres', [])])
 
-    if not any(word in exclude_tags for word in words) and vr_tag_present:
+    if not any(word in exclude_tags for word in words) and vr_tag_present and not any(word in exclude_tags for word in game_details.get('name', '').lower().split()) :
         game_details['url'] = f'https://store.steampowered.com/app/{appid}/'  # Storing the URL in the game details
 
         all_games_data[appid] = game_data

@@ -3,3 +3,4 @@ mysql-connector-python
 Unidecode
 beautifulsoup4
 openai
+python-dotenv

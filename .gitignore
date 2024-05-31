@@ -2,4 +2,6 @@
 pics/*
 old_games.json
 new_games.json
+non_vr_app_ids.txt  
 game_data_output.json
+__pycache__
